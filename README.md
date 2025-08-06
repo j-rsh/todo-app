@@ -90,6 +90,14 @@ src/
 └── hooks/              # Custom React hooks
 ```
 
+##  Code Documentation
+
+The codebase is thoroughly documented with comprehensive comments to ensure clarity and maintainability:
+
+- **Inline Comments**: Detailed explanations for complex logic and business rules
+
+This documentation makes the codebase accessible to new developers and helps maintain code quality during future updates.
+
 ##  Building for Production
 
 Create a production build:

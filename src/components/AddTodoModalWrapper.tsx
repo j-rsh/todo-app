@@ -48,7 +48,7 @@ const AddTodoModalWrapper: React.FC = () => {
         onCancel={() => setOpen(false)}
         footer={null}
         title="Add Todo"
-        destroyOnClose
+        destroyOnHidden
         centered
         width={600}
       >
