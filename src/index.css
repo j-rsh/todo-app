@@ -45,3 +45,21 @@ code {
     display: block !important;
   }
 }
+
+/* Category selector styles */
+.category-selector .ant-select-selection-item {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.category-selector .ant-select-selection-search {
+  overflow: hidden;
+}
+
+.category-selector .ant-select-selection-placeholder {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

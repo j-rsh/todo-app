@@ -20,19 +20,20 @@ const CategorySelector = ({
     <Select
       value={value}
       onChange={(value: string) => onChange(value)}
-      style={{ flex: 1 }}
+      style={{ flex: 1, minWidth: 0 }}
       options={categories}
+      className="category-selector"
       // custom rendering for each option in the dropdown
       optionRender={(option) => (
-        <div className="flex items-center justify-between w-full">
-          <div className="flex items-center gap-2">
+        <div className="flex items-center justify-between w-full min-w-0">
+          <div className="flex items-center gap-2 min-w-0 flex-1">
             {/* colored circle for category color */}
             <div
-              className="w-4 h-4 rounded-full"
+              className="w-4 h-4 rounded-full flex-shrink-0"
               style={{ backgroundColor: option.data.color }}
             />
-            {/* category label */}
-            {option.data.label}
+            {/* category label with truncation */}
+            <span className="truncate">{option.data.label}</span>
           </div>
           {/* show delete icon for all categories except "all" */}
           {option.data.value !== "all" && (
@@ -44,7 +45,7 @@ const CategorySelector = ({
               cancelText="No"
             >
               <DeleteOutlined
-                className="text-red-500 hover:text-red-700 cursor-pointer"
+                className="text-red-500 hover:text-red-700 cursor-pointer flex-shrink-0 ml-2"
                 onClick={e => e.stopPropagation()} // prevent select from closing when clicking delete
               />
             </Popconfirm>
