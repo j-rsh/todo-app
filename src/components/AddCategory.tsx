@@ -1,4 +1,4 @@
-import { Modal, Input, ColorPicker } from "antd"
+import { Modal, Input, ColorPicker, message } from "antd"
 import { useCategories } from "../context/CategoryContext";
 import { useState } from "react";
 
@@ -11,19 +11,54 @@ const AddCategory: React.FC<AddCategoryProps> = ({ isVisible, onClose }) => {
     const { categories, setCategories } = useCategories();
     const [newCategoryName, setNewCategoryName] = useState("");
     const [newCategoryColor, setNewCategoryColor] = useState("#1890ff");
+    const [error, setError] = useState("");
     
     const handleAddCategory = () => {
-        if (newCategoryName.trim()) {
-          const newCategory = {
-            value: newCategoryName.toLowerCase().replace(/\s+/g, '-'),
-            label: newCategoryName,
-            color: newCategoryColor
-          };
-          setCategories([...categories, newCategory]);
-          setNewCategoryName("");
-          setNewCategoryColor("#1890ff");
-          onClose();
+        if (!newCategoryName.trim()) {
+          setError("Category name cannot be empty");
+          return;
         }
+
+        // Check for duplicate categories (case-insensitive)
+        const normalizedNewName = newCategoryName.trim().toLowerCase();
+        const isDuplicate = categories.some(category => 
+          category.label.toLowerCase() === normalizedNewName ||
+          category.value === normalizedNewName.replace(/\s+/g, '-')
+        );
+
+        if (isDuplicate) {
+          setError("A category with this name already exists");
+          return;
+        }
+
+        // Clear any previous errors
+        setError("");
+
+        const newCategory = {
+          value: newCategoryName.toLowerCase().replace(/\s+/g, '-'),
+          label: newCategoryName.trim(),
+          color: newCategoryColor
+        };
+        setCategories([...categories, newCategory]);
+        setNewCategoryName("");
+        setNewCategoryColor("#1890ff");
+        message.success("Category added successfully!");
+        onClose();
+    };
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setNewCategoryName(e.target.value);
+        // Clear error when user starts typing
+        if (error) {
+          setError("");
+        }
+    };
+
+    const handleClose = () => {
+        setNewCategoryName("");
+        setNewCategoryColor("#1890ff");
+        setError("");
+        onClose();
     };
     
     return (
@@ -31,16 +66,28 @@ const AddCategory: React.FC<AddCategoryProps> = ({ isVisible, onClose }) => {
         title="Add New Category"
         open={isVisible}
         onOk={handleAddCategory}
-        onCancel={onClose}
+        onCancel={handleClose}
         okText="Add"
         cancelText="Cancel"
+        okButtonProps={{
+          className: "bg-blue-500 hover:bg-blue-600"
+        }}
       >
         <div className="space-y-4">
-          <Input
-            placeholder="Category name"
-            value={newCategoryName}
-            onChange={(e) => setNewCategoryName(e.target.value)}
-          />
+          <div>
+            <Input
+              placeholder="Category name"
+              value={newCategoryName}
+              onChange={handleInputChange}
+              status={error ? "error" : ""}
+              onPressEnter={handleAddCategory}
+            />
+            {error && (
+              <div className="text-red-500 text-sm mt-1">
+                {error}
+              </div>
+            )}
+          </div>
           <div className="flex items-center gap-2">
             <span>Color:</span>
             <ColorPicker

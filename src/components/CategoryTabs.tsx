@@ -50,7 +50,7 @@ const CategoryTabs: React.FC<CategoryTabsProps> = ({
           activeKey={selectedCategory}
           onChange={onCategoryChange}
           items={tabItems}
-          className="custom-tabs"
+          className="custom-tabs mobile-hide-dropdown"
         />
         </div>
     </div>
