@@ -32,7 +32,6 @@ const CategorySelector = ({
               className="w-4 h-4 rounded-full flex-shrink-0"
               style={{ backgroundColor: option.data.color }}
             />
-            {/* category label with truncation */}
             <span className="truncate">{option.data.label}</span>
           </div>
           {/* show delete icon for all categories except "all" */}
@@ -42,11 +41,14 @@ const CategorySelector = ({
               description="this will also remove it from all existing todos."
               onConfirm={() => onDelete(option.data.value)}
               okText="Yes"
+              okButtonProps={{
+                className: "bg-blue-500 hover:bg-blue-600"
+              }}
               cancelText="No"
             >
               <DeleteOutlined
                 className="text-red-500 hover:text-red-700 cursor-pointer flex-shrink-0 ml-2"
-                onClick={e => e.stopPropagation()} // prevent select from closing when clicking delete
+                onClick={e => e.stopPropagation()}
               />
             </Popconfirm>
           )}

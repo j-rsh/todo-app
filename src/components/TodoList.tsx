@@ -28,48 +28,26 @@ const TodoList: React.FC<TodoListProps> = ({ searchTerm = "" }) => {
     setDesktopRowsToShow(2);
   }, [searchTerm, selectedCategory]);
 
-  // Auto-switch category tab based on search results
+  // Auto-switch to "all" category when searching
   useEffect(() => {
-    if (searchTerm !== "" && !userManuallyChangedCategory.current) {
+    if (searchTerm !== "") {
       // Get all tasks that match the search
       const searchResults = state.tasks.filter(task => 
         task.title.toLowerCase().includes(searchTerm.toLowerCase())
       );
       
+      // If there are search results, switch to "all" to show all matching results
       if (searchResults.length > 0) {
-        // Get unique categories from search results
-        const resultCategories = Array.from(new Set(searchResults.map(task => task.category)));
-        
-        // If all results are from the same category, switch to that category
-        if (resultCategories.length === 1) {
-          setSelectedCategory(resultCategories[0]);
-        } else {
-          // If results are from multiple categories, switch to "all"
-          setSelectedCategory("all");
-        }
+        setSelectedCategory("all");
       }
-    }
-    
-    // Reset manual change flag when search term changes
-    if (searchTerm !== previousSearchTerm.current) {
-      userManuallyChangedCategory.current = false;
-      previousSearchTerm.current = searchTerm;
     }
   }, [searchTerm, state.tasks]);
 
   // filter tasks by category and search term
   const filteredTasks = state.tasks.filter(task => {
-    // If there's a search term, check if user manually changed category
+    // If there's a search term, search across all categories
     if (searchTerm !== "") {
       const matchesSearch = task.title.toLowerCase().includes(searchTerm.toLowerCase());
-      
-      // If user manually changed category, filter by both search and selected category
-      if (userManuallyChangedCategory.current) {
-        const matchesCategory = selectedCategory === "all" || task.category === selectedCategory;
-        return matchesSearch && matchesCategory;
-      }
-      
-      // If auto-switched, search across all categories
       return matchesSearch;
     }
     
