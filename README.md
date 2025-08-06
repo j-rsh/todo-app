@@ -74,20 +74,20 @@ A modern, feature-rich todo application built with React, TypeScript, and Tailwi
 
 ```
 src/
-├── components/          # Reusable UI components
-│   ├── AddTodo.tsx     # Task creation component
-│   ├── TodoList.tsx    # Main task list component
-│   ├── TodoListItem.tsx # Individual task item
-│   ├── CategoryTabs.tsx # Category filtering tabs
+├── components/          # reusable UI components
+│   ├── AddTodo.tsx     # task creation component
+│   ├── TodoList.tsx    # main task list component
+│   ├── TodoListItem.tsx # individual task item
+│   ├── CategoryTabs.tsx # category filtering tabs
 │   └── ...
 ├── context/            # React Context providers
-│   ├── TaskContext.tsx # Task state management
-│   └── CategoryContext.tsx # Category state management
-├── features/           # Reducer logic
-│   └── tasksReducer.tsx # Task state reducer
-├── pages/              # Page components
-│   └── Home.tsx        # Main application page
-└── hooks/              # Custom React hooks
+│   ├── TaskContext.tsx # task state management
+│   └── CategoryContext.tsx # category state management
+├── features/           # reducer logic
+│   └── tasksReducer.tsx # task state reducer
+├── pages/              # page components
+│   └── Home.tsx        # main application page
+└── hooks/              # custom React hooks
 ```
 
 ##  Code Documentation

@@ -20,7 +20,7 @@ const AddCategory: React.FC<AddCategoryProps> = ({ isVisible, onClose, onCategor
           return;
         }
 
-        // Check for duplicate categories (case-insensitive)
+        // check for duplicate categories (case-insensitive)
         const normalizedNewName = newCategoryName.trim().toLowerCase();
         const isDuplicate = categories.some(category => 
           category.label.toLowerCase() === normalizedNewName ||
@@ -32,7 +32,7 @@ const AddCategory: React.FC<AddCategoryProps> = ({ isVisible, onClose, onCategor
           return;
         }
 
-        // Clear any previous errors
+        // clear any previous errors
         setError("");
 
         const newCategory = {
@@ -45,7 +45,7 @@ const AddCategory: React.FC<AddCategoryProps> = ({ isVisible, onClose, onCategor
         setNewCategoryColor("#1890ff");
         message.success("Category added successfully!");
         
-        // Call the callback with the new category value
+        // call the callback with the new category value
         if (onCategoryAdded) {
           onCategoryAdded(newCategory.value);
         }
@@ -55,7 +55,7 @@ const AddCategory: React.FC<AddCategoryProps> = ({ isVisible, onClose, onCategor
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNewCategoryName(e.target.value);
-        // Clear error when user starts typing
+        // clear error when user starts typing
         if (error) {
           setError("");
         }

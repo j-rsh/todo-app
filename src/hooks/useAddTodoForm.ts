@@ -5,47 +5,46 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import type { Dayjs } from 'dayjs';
 
-// Custom hook to manage the Add Todo form logic
+// custom hook to manage the Add Todo form logic
 export function useAddTodoForm(onClose?: () => void) {
-  // Get the dispatch function from TaskContext to update tasks
   const { dispatch } = useContext(TaskContext)!;
 
-  // Get categories and the function to update them from CategoryContext
+  // get categories and the function to update them from CategoryContext
   const { categories, setCategories } = useCategories();
 
-  // State to control the visibility of the "Add Category" modal
+  // state to control the visibility of the "Add Category" modal
   const [isAddCategoryModalVisible, setIsAddCategoryModalVisible] = useState(false);
 
-  // Formik hook to manage form state, validation, and submission
+  // formik hook to manage form state, validation, and submission
   const formik = useFormik({
     initialValues: {
-      title: '',                // Task title
-      description: '',          // Task description
-      category: 'no category',  // Default category
-      dueDate: null as Dayjs | null // Due date (optional, using Dayjs)
+      title: '',                
+      description: '',         
+      category: 'no category',  
+      dueDate: null as Dayjs | null 
     },
-    // Validation schema using Yup
+    // validation schema using Yup
     validationSchema: Yup.object({
       title: Yup.string().required('Title is required'),
       description: Yup.string().max(40, 'Description too long'),
       category: Yup.string().required('Category is required')
     }),
-    // happens when the form is submitted
+
     onSubmit: (values, { resetForm }) => {
       dispatch({
         type: "ADD_TASK",
         payload: {
-          id: Date.now().toString(), // Unique ID based on timestamp
+          id: Date.now().toString(), 
           title: values.title,
           description: values.description,
           category: values.category,
-          dueDate: values.dueDate?.toISOString() || undefined, // Convert Dayjs to ISO string if present
+          dueDate: values.dueDate?.toISOString() || undefined, 
           completed: false,
-          createdAt: new Date().toISOString(), // Timestamp for creation
+          createdAt: new Date().toISOString(), 
         },
       });
-      resetForm(); // reset the form fields
-      if (onClose) onClose(); //close the modal/dialog if provided
+      resetForm(); 
+      if (onClose) onClose()
     }
   });
 
@@ -61,16 +60,15 @@ export function useAddTodoForm(onClose?: () => void) {
 
   // function to handle when a new category is added
   const handleCategoryAdded = (categoryValue: string) => {
-    // Automatically select the newly added category
     formik.setFieldValue('category', categoryValue);
   };
 
   return {
-    formik,                        // formik object for form state and helpers
-    categories,                    // list of categories
-    isAddCategoryModalVisible,     // state for add category modal visibility
-    setIsAddCategoryModalVisible,  // setter for modal visibility
-    handleDeleteCategory,          // handler to delete a category
-    handleCategoryAdded,           // handler for when a new category is added
+    formik,                        
+    categories,                  
+    isAddCategoryModalVisible,     
+    setIsAddCategoryModalVisible,  
+    handleDeleteCategory,          
+    handleCategoryAdded,      
   };
 } 

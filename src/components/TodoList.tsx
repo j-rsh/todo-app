@@ -19,25 +19,25 @@ const TodoList: React.FC<TodoListProps> = ({ searchTerm = "", onClearSearch }) =
   const [mobileCardsToShow, setMobileCardsToShow] = useState(3);
   const [desktopRowsToShow, setDesktopRowsToShow] = useState(2);
   
-  // Track if user manually changed category
+  // track if user manually changed category
   const userManuallyChangedCategory = useRef(false);
   const previousSearchTerm = useRef("");
 
-  // Reset load more state when search or category changes
+  // reset load more state when search or category changes
   useEffect(() => {
     setMobileCardsToShow(3);
     setDesktopRowsToShow(2);
   }, [searchTerm, selectedCategory]);
 
-  // Auto-switch to "all" category when searching
+  // auto-switch to "all" category when searching
   useEffect(() => {
     if (searchTerm !== "") {
-      // Get all tasks that match the search
+      // get all tasks that match the search
       const searchResults = state.tasks.filter(task => 
         task.title.toLowerCase().includes(searchTerm.toLowerCase())
       );
       
-      // If there are search results, switch to "all" to show all matching results
+      // if there are search results, switch to "all" to show all matching results
       if (searchResults.length > 0) {
         setSelectedCategory("all");
       }
@@ -46,17 +46,17 @@ const TodoList: React.FC<TodoListProps> = ({ searchTerm = "", onClearSearch }) =
 
   // filter tasks by category and search term
   const filteredTasks = state.tasks.filter(task => {
-    // If there's a search term, search across all categories
+    // if there's a search term, search across all categories
     if (searchTerm !== "") {
       const matchesSearch = task.title.toLowerCase().includes(searchTerm.toLowerCase());
       return matchesSearch;
     }
     
-    // If no search term, filter by selected category only
+    // if no search term, filter by selected category only
     return selectedCategory === "all" || task.category === selectedCategory;
   });
   
-  // Check if there are no tasks
+  // check if there are no tasks
   const hasNoTasks = filteredTasks.length === 0;
 
   // calculate how many tasks to show based on screen size
@@ -64,7 +64,7 @@ const TodoList: React.FC<TodoListProps> = ({ searchTerm = "", onClearSearch }) =
   const desktopLimit = desktopRowsToShow * 3;
   const currentLimit = window.innerWidth >= 768 ? desktopLimit : mobileLimit;
 
-  // Slice tasks based on current limit
+  // slice tasks based on current limit
   const displayedTasks = filteredTasks.slice(0, currentLimit);
   const hasMoreTasks = filteredTasks.length > currentLimit;
 
@@ -100,7 +100,7 @@ const TodoList: React.FC<TodoListProps> = ({ searchTerm = "", onClearSearch }) =
     userManuallyChangedCategory.current = true;
     setSelectedCategory(category);
     
-    // Clear search when user manually changes category
+    // clear search when user manually changes category
     if (searchTerm !== "" && onClearSearch) {
       onClearSearch();
     }

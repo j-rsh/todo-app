@@ -28,7 +28,7 @@ const EditTodoButton: React.FC<EditTodoButtonProps> = ({ task }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isAddCategoryModalVisible, setIsAddCategoryModalVisible] = useState(false);
   
-  // Form state
+  // form state
   const [editTitle, setEditTitle] = useState("");
   const [editDescription, setEditDescription] = useState("");
   const [editCategory, setEditCategory] = useState("");
@@ -79,7 +79,7 @@ const EditTodoButton: React.FC<EditTodoButtonProps> = ({ task }) => {
   };
 
   const handleCategoryAdded = (categoryValue: string) => {
-    // Automatically select the newly added category
+    // automatically select the newly added category
     setEditCategory(categoryValue);
   };
 

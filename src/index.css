@@ -16,7 +16,7 @@ code {
     monospace;
 }
 
-/* Hide dropdown functionality ONLY on mobile devices */
+/* hide dropdown functionality ONLY on mobile devices */
 @media (max-width: 768px) {
   .mobile-hide-dropdown .ant-tabs-nav-more {
     display: none !important;
@@ -31,7 +31,7 @@ code {
   }
 }
 
-/* Ensure dropdown is visible on desktop */
+/* ensure dropdown is visible on desktop */
 @media (min-width: 769px) {
   .mobile-hide-dropdown .ant-tabs-nav-more {
     display: block !important;
@@ -46,7 +46,7 @@ code {
   }
 }
 
-/* Category selector styles */
+/* category selector styles */
 .category-selector .ant-select-selection-item {
   overflow: hidden;
   text-overflow: ellipsis;
