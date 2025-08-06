@@ -94,12 +94,12 @@ const TodoList: React.FC<TodoListProps> = ({ searchTerm = "" }) => {
 
       {/* show message when no tasks exist */}
       {hasNoTasks ? (
-        <div className="flex flex-col items-center justify-center py-12 text-center">
+        <div className="flex flex-col items-center justify-center py-12 text-center px-4">
           <div className="text-gray-400 text-6xl mb-4">🙂</div>
           <h3 className="text-xl font-semibold text-gray-600 mb-2">
             {searchTerm !== "" ? "No todos found" : "No todos exist"}
           </h3>
-          <p className="text-gray-500">
+          <p className="text-gray-500 break-words max-w-full overflow-hidden">
             {searchTerm !== "" 
               ? `No todos match "${searchTerm}"`
               : selectedCategory === 'all' 
