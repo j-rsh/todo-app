@@ -5,9 +5,10 @@ import { useState } from "react";
 interface AddCategoryProps {
   isVisible: boolean;
   onClose: () => void;
+  onCategoryAdded?: (categoryValue: string) => void;
 }
 
-const AddCategory: React.FC<AddCategoryProps> = ({ isVisible, onClose }) => {
+const AddCategory: React.FC<AddCategoryProps> = ({ isVisible, onClose, onCategoryAdded }) => {
     const { categories, setCategories } = useCategories();
     const [newCategoryName, setNewCategoryName] = useState("");
     const [newCategoryColor, setNewCategoryColor] = useState("#1890ff");
@@ -43,6 +44,12 @@ const AddCategory: React.FC<AddCategoryProps> = ({ isVisible, onClose }) => {
         setNewCategoryName("");
         setNewCategoryColor("#1890ff");
         message.success("Category added successfully!");
+        
+        // Call the callback with the new category value
+        if (onCategoryAdded) {
+          onCategoryAdded(newCategory.value);
+        }
+        
         onClose();
     };
 

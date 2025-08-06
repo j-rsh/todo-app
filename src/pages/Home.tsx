@@ -6,6 +6,10 @@ import SearchTodos from "../components/SearchTodos";
 const Home = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
+  const clearSearch = () => {
+    setSearchTerm("");
+  };
+
   return (
     <div className="max-w-screen-2xl mx-auto max-h-full p-6">
       <h2 className="text-xl font-bold mb-3">Todo List</h2>
@@ -20,7 +24,7 @@ const Home = () => {
       <AddTodoModalWrapper />
       </div>
       
-      <TodoList searchTerm={searchTerm} />
+      <TodoList searchTerm={searchTerm} onClearSearch={clearSearch} />
       
 
     </div>

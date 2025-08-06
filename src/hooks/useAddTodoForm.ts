@@ -59,11 +59,18 @@ export function useAddTodoForm(onClose?: () => void) {
     }
   };
 
+  // function to handle when a new category is added
+  const handleCategoryAdded = (categoryValue: string) => {
+    // Automatically select the newly added category
+    formik.setFieldValue('category', categoryValue);
+  };
+
   return {
     formik,                        // formik object for form state and helpers
     categories,                    // list of categories
     isAddCategoryModalVisible,     // state for add category modal visibility
     setIsAddCategoryModalVisible,  // setter for modal visibility
     handleDeleteCategory,          // handler to delete a category
+    handleCategoryAdded,           // handler for when a new category is added
   };
 } 

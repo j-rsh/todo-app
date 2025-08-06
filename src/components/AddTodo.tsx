@@ -5,7 +5,7 @@ import TodoFormFields from "./TodoFormFields";
 import { useAddTodoForm } from "../hooks/useAddTodoForm";
 
 const AddTodo: React.FC<{ onClose?: () => void }> = ({ onClose }) => {
-  const { formik, categories, isAddCategoryModalVisible, setIsAddCategoryModalVisible, handleDeleteCategory } = useAddTodoForm(onClose);
+  const { formik, categories, isAddCategoryModalVisible, setIsAddCategoryModalVisible, handleDeleteCategory, handleCategoryAdded } = useAddTodoForm(onClose);
 
   return (
     <div className="max-w-md mx-auto p-4">
@@ -39,6 +39,7 @@ const AddTodo: React.FC<{ onClose?: () => void }> = ({ onClose }) => {
       <AddCategory 
         isVisible={isAddCategoryModalVisible}
         onClose={() => setIsAddCategoryModalVisible(false)}
+        onCategoryAdded={handleCategoryAdded}
       />
     </div>
   );

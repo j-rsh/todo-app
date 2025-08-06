@@ -7,9 +7,10 @@ import TodoListItem from "./TodoListItem";
 
 interface TodoListProps {
   searchTerm?: string;
+  onClearSearch?: () => void;
 }
 
-const TodoList: React.FC<TodoListProps> = ({ searchTerm = "" }) => {
+const TodoList: React.FC<TodoListProps> = ({ searchTerm = "", onClearSearch }) => {
   const { state, dispatch } = useContext(TaskContext)!;
   const { categories } = useCategories();
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -98,6 +99,11 @@ const TodoList: React.FC<TodoListProps> = ({ searchTerm = "" }) => {
   const handleCategoryChange = (category: string) => {
     userManuallyChangedCategory.current = true;
     setSelectedCategory(category);
+    
+    // Clear search when user manually changes category
+    if (searchTerm !== "" && onClearSearch) {
+      onClearSearch();
+    }
   };
 
   return (

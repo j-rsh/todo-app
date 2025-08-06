@@ -78,6 +78,11 @@ const EditTodoButton: React.FC<EditTodoButtonProps> = ({ task }) => {
     setCategories(categories.filter((cat: Category) => cat.value !== categoryValue));
   };
 
+  const handleCategoryAdded = (categoryValue: string) => {
+    // Automatically select the newly added category
+    setEditCategory(categoryValue);
+  };
+
   return (
     <>
       <EditOutlined
@@ -155,6 +160,7 @@ const EditTodoButton: React.FC<EditTodoButtonProps> = ({ task }) => {
       <AddCategory 
         isVisible={isAddCategoryModalVisible}
         onClose={() => setIsAddCategoryModalVisible(false)}
+        onCategoryAdded={handleCategoryAdded}
       />
     </>
   );
