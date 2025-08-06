@@ -85,7 +85,10 @@ const TodoListItem: React.FC<TodoListItemProps> = ({ task, getCategoryColor, onT
         {task.dueDate ? new Date(task.dueDate).toLocaleDateString() : 'No due date'}
       </div>
       {task.category && (
-        <span className="text-xs bg-white bg-opacity-50 text-gray-700 px-2 py-1 rounded-full">
+        <span 
+          className="text-xs bg-white bg-opacity-50 text-gray-700 px-2 py-1 rounded-full truncate max-w-[120px]"
+          title={task.category}
+        >
           {task.category}
         </span>
       )}

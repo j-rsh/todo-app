@@ -27,7 +27,7 @@ export function useAddTodoForm(onClose?: () => void) {
     // Validation schema using Yup
     validationSchema: Yup.object({
       title: Yup.string().required('Title is required'),
-      description: Yup.string().max(30, 'Description too long'),
+      description: Yup.string().max(40, 'Description too long'),
       category: Yup.string().required('Category is required')
     }),
     // happens when the form is submitted
