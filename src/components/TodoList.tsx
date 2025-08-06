@@ -14,11 +14,11 @@ const TodoList: React.FC<TodoListProps> = ({ searchTerm = "" }) => {
   const { categories } = useCategories();
   const [selectedCategory, setSelectedCategory] = useState("all");
   
-  // Add state for load more functionality
+  // state for selected category and load more functionality
   const [mobileCardsToShow, setMobileCardsToShow] = useState(3);
   const [desktopRowsToShow, setDesktopRowsToShow] = useState(2);
 
-  // Auto-switch to "all" category when searching
+  // to auto-switch to 'all' category when searching and no results in current category
   useEffect(() => {
     if (searchTerm !== "") {
       // Check if search results exist in current category
@@ -35,7 +35,7 @@ const TodoList: React.FC<TodoListProps> = ({ searchTerm = "" }) => {
     }
   }, [searchTerm, selectedCategory, state.tasks]);
 
-  // Filter tasks by category and search term
+  // filter tasks by category and search term
   const filteredTasks = state.tasks.filter(task => {
     // If there's a search term, search across all categories
     if (searchTerm !== "") {
@@ -47,7 +47,7 @@ const TodoList: React.FC<TodoListProps> = ({ searchTerm = "" }) => {
   // Check if there are no tasks
   const hasNoTasks = filteredTasks.length === 0;
 
-  // Calculate limits
+  // calculate how many tasks to show based on screen size
   const mobileLimit = mobileCardsToShow;
   const desktopLimit = desktopRowsToShow * 3;
   const currentLimit = window.innerWidth >= 768 ? desktopLimit : mobileLimit;
@@ -56,7 +56,7 @@ const TodoList: React.FC<TodoListProps> = ({ searchTerm = "" }) => {
   const displayedTasks = filteredTasks.slice(0, currentLimit);
   const hasMoreTasks = filteredTasks.length > currentLimit;
 
-  // Color mapping for different categories
+  // get color for category background
   const getCategoryColor = (category: string) => {
     const foundCategory = categories.find(cat => cat.value === category);
     if (foundCategory) {
@@ -69,10 +69,12 @@ const TodoList: React.FC<TodoListProps> = ({ searchTerm = "" }) => {
     return 'bg-gray-100';
   };
 
+  // toggle task completion
   const handleToggle = (id: string) => {
     dispatch({ type: "TOGGLE_TASK", payload: id });
   };
 
+  // handle load more button click
   const handleLoadMore = () => {
     if (window.innerWidth >= 768) {
       setDesktopRowsToShow(prev => prev + 2);
@@ -82,14 +84,15 @@ const TodoList: React.FC<TodoListProps> = ({ searchTerm = "" }) => {
   };
 
   return (
+    // main container
     <div className="">
-      {/* Category Filter Tabs */}
+      {/* category filter tabs */}
       <CategoryTabs
         selectedCategory={selectedCategory}
         onCategoryChange={setSelectedCategory}
       />
 
-      {/* Show message when no tasks exist */}
+      {/* show message when no tasks exist */}
       {hasNoTasks ? (
         <div className="flex flex-col items-center justify-center py-12 text-center">
           <div className="text-gray-400 text-6xl mb-4">🙂</div>
@@ -107,7 +110,7 @@ const TodoList: React.FC<TodoListProps> = ({ searchTerm = "" }) => {
         </div>
       ) : (
         <>
-          {/* Task Cards Grid */}
+          {/* task cards grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {displayedTasks.map((task) => (
               <TodoListItem
@@ -119,7 +122,7 @@ const TodoList: React.FC<TodoListProps> = ({ searchTerm = "" }) => {
             ))}
           </div>
 
-          {/* Load More Button */}
+          {/* load more button */}
           <LoadMoreButton 
             hasMoreTasks={hasMoreTasks}
             onLoadMore={handleLoadMore}
@@ -129,5 +132,4 @@ const TodoList: React.FC<TodoListProps> = ({ searchTerm = "" }) => {
     </div>
   );
 };
-
 export default TodoList;

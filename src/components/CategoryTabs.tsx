@@ -15,12 +15,12 @@ const CategoryTabs: React.FC<CategoryTabsProps> = ({
 }) => {
   const { categories } = useCategories();
 
-  const tabItems = [
+  const tabItems = categories ? [
     {
       key: 'all',
       label: 'All Tasks',
     },
-    ...categories.map(cat => ({
+    ...categories?.map(cat => ({
       key: cat.value,
       label: (
         <span className="flex items-center gap-2">
@@ -37,17 +37,22 @@ const CategoryTabs: React.FC<CategoryTabsProps> = ({
         </span>
       )
     }))
-  ];
+  ] : [{
+    key: 'all',
+    label: 'All Tasks',
+  }];
 
   return (
     <div className={`mb-6 ${className}`}>
-      <Tabs
-        defaultActiveKey="all"
-        activeKey={selectedCategory}
-        onChange={onCategoryChange}
-        items={tabItems}
-        className="custom-tabs"
-      />
+        <div className="overflow-x-auto scrollbar-hide">
+        <Tabs
+          defaultActiveKey="all"
+          activeKey={selectedCategory}
+          onChange={onCategoryChange}
+          items={tabItems}
+          className="custom-tabs"
+        />
+        </div>
     </div>
   );
 };

@@ -9,23 +9,28 @@ interface TodoListItemProps {
   onToggle: (id: string) => void;
 }
 
+// main todo list item component
 const TodoListItem: React.FC<TodoListItemProps> = ({ task, getCategoryColor, onToggle }) => (
+  // card container with background color based on category
   <div
     className="rounded-lg p-6 shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer md:min-h-[150px]"
     style={{ backgroundColor: getCategoryColor(task.category || 'default') }}
   >
     <div className="flex justify-between items-start mb-4">
+      {/* checkbox for marking task complete */}
       <Checkbox
         checked={task.completed}
         onChange={() => onToggle(task.id)}
         className="!text-gray-600"
       />
       <div className="flex items-center gap-2">
+        {/* edit and delete buttons */}
         <EditTodoButton task={task} />
         <DeleteTodoButton taskId={task.id} />
       </div>
     </div>
     <div>
+      {/* title with tooltip, different for desktop and mobile */}
       <div className="hidden md:block">
         <Tooltip title={task.title} placement="topLeft">
           <h3
@@ -59,6 +64,7 @@ const TodoListItem: React.FC<TodoListItemProps> = ({ task, getCategoryColor, onT
       </div>
     </div>
     <div className="hidden md:block">
+      {/* description with tooltip, only on desktop */}
       <Tooltip title={task.description || "No description available"} placement="topLeft">
         <p
           className="text-gray-600 text-sm mb-4 leading-relaxed truncate overflow-hidden"
@@ -74,6 +80,7 @@ const TodoListItem: React.FC<TodoListItemProps> = ({ task, getCategoryColor, onT
       </Tooltip>
     </div>
     <div className="flex justify-between items-center mt-auto">
+      {/* due date and category label */}
       <div className="text-gray-500 text-sm">
         {task.dueDate ? new Date(task.dueDate).toLocaleDateString() : 'No due date'}
       </div>

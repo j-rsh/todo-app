@@ -9,6 +9,7 @@ interface TaskContextType {
 export const TaskContext = createContext<TaskContextType | undefined>(undefined);
 
 export const TaskProvider = ({ children }: { children: ReactNode }) => {
+  // get tasks from localstorage or use empty array
   const storedTasks = typeof window !== "undefined"
     ? localStorage.getItem("tasks")
     : null;
@@ -19,10 +20,12 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
 
   const [state, dispatch] = useReducer(tasksReducer, initialState);
 
+  // save tasks to localstorage when they change
   useEffect(() => {
     localStorage.setItem("tasks", JSON.stringify(state.tasks));
   }, [state.tasks]);
 
+  // provide state and dispatch to children
   return (
     <TaskContext.Provider value={{ state, dispatch }}>
       {children}

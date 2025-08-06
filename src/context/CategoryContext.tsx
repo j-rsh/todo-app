@@ -26,22 +26,25 @@ interface CategoryProviderProps {
 }
 
 export const CategoryProvider: React.FC<CategoryProviderProps> = ({ children }) => {
-  // Initialize with default categories and load from localStorage
+  // initialize with default categories or from localstorage
   const [categories, setCategoriesState] = useState<Category[]>(() => {
     const savedCategories = localStorage.getItem('categories');
-    if (savedCategories) {
-      return JSON.parse(savedCategories);
+    if (savedCategories && savedCategories !== 'null') {
+      try {
+        return JSON.parse(savedCategories);
+      } catch (error) {
+        console.error('Error parsing categories from localStorage:', error);
+      }
     }
-    // Default categories
-    // return [
-    //   { value: 'personal', label: 'Personal', color: '#1890ff' },
-    //   { value: 'work', label: 'Work', color: '#52c41a' },
-    //   { value: 'shopping', label: 'Shopping', color: '#fa8c16' },
-    //   { value: 'health', label: 'Health', color: '#eb2f96' },
-    // ];
+    // default categories
+    return [
+      { value: 'personal', label: 'Personal', color: '#1890ff' },
+      { value: 'work', label: 'Work', color: '#52c41a' },
+      { value: 'shopping', label: 'Shopping', color: '#fa8c16' },
+    ];
   });
 
-  // Save to localStorage whenever categories change
+  // save categories to localstorage when they change
   useEffect(() => {
     localStorage.setItem('categories', JSON.stringify(categories));
   }, [categories]);

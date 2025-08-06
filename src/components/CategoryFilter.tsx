@@ -7,6 +7,7 @@ interface CategoryFilterProps {
 
 const CategoryFilter = ({ selectedCategory, onCategoryChange }: CategoryFilterProps) => {
   const categories = [
+    //represents the "all" category option in the filter
     { key: "all", label: "All" },
   ];
 
