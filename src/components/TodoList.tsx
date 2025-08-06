@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import { TaskContext } from "../context/TaskContext";
 import { useCategories } from "../context/CategoryContext";
 import CategoryTabs from "./CategoryTabs";
@@ -17,33 +17,66 @@ const TodoList: React.FC<TodoListProps> = ({ searchTerm = "" }) => {
   // state for selected category and load more functionality
   const [mobileCardsToShow, setMobileCardsToShow] = useState(3);
   const [desktopRowsToShow, setDesktopRowsToShow] = useState(2);
+  
+  // Track if user manually changed category
+  const userManuallyChangedCategory = useRef(false);
+  const previousSearchTerm = useRef("");
 
-  // to auto-switch to 'all' category when searching and no results in current category
+  // Reset load more state when search or category changes
   useEffect(() => {
-    if (searchTerm !== "") {
-      // Check if search results exist in current category
-      const resultsInCurrentCategory = state.tasks.filter(task => {
-        const matchesCategory = selectedCategory === "all" || task.category === selectedCategory;
-        const matchesSearch = task.title.toLowerCase().includes(searchTerm.toLowerCase());
-        return matchesCategory && matchesSearch;
-      });
+    setMobileCardsToShow(3);
+    setDesktopRowsToShow(2);
+  }, [searchTerm, selectedCategory]);
+
+  // Auto-switch category tab based on search results
+  useEffect(() => {
+    if (searchTerm !== "" && !userManuallyChangedCategory.current) {
+      // Get all tasks that match the search
+      const searchResults = state.tasks.filter(task => 
+        task.title.toLowerCase().includes(searchTerm.toLowerCase())
+      );
       
-      // Only switch to "all" if no results found in current category
-      if (resultsInCurrentCategory.length === 0) {
-        setSelectedCategory("all");
+      if (searchResults.length > 0) {
+        // Get unique categories from search results
+        const resultCategories = Array.from(new Set(searchResults.map(task => task.category)));
+        
+        // If all results are from the same category, switch to that category
+        if (resultCategories.length === 1) {
+          setSelectedCategory(resultCategories[0]);
+        } else {
+          // If results are from multiple categories, switch to "all"
+          setSelectedCategory("all");
+        }
       }
     }
-  }, [searchTerm, selectedCategory, state.tasks]);
+    
+    // Reset manual change flag when search term changes
+    if (searchTerm !== previousSearchTerm.current) {
+      userManuallyChangedCategory.current = false;
+      previousSearchTerm.current = searchTerm;
+    }
+  }, [searchTerm, state.tasks]);
 
   // filter tasks by category and search term
   const filteredTasks = state.tasks.filter(task => {
-    // If there's a search term, search across all categories
+    // If there's a search term, check if user manually changed category
     if (searchTerm !== "") {
-      return task.title.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesSearch = task.title.toLowerCase().includes(searchTerm.toLowerCase());
+      
+      // If user manually changed category, filter by both search and selected category
+      if (userManuallyChangedCategory.current) {
+        const matchesCategory = selectedCategory === "all" || task.category === selectedCategory;
+        return matchesSearch && matchesCategory;
+      }
+      
+      // If auto-switched, search across all categories
+      return matchesSearch;
     }
+    
     // If no search term, filter by selected category only
     return selectedCategory === "all" || task.category === selectedCategory;
   });
+  
   // Check if there are no tasks
   const hasNoTasks = filteredTasks.length === 0;
 
@@ -83,13 +116,19 @@ const TodoList: React.FC<TodoListProps> = ({ searchTerm = "" }) => {
     }
   };
 
+  // handle category change
+  const handleCategoryChange = (category: string) => {
+    userManuallyChangedCategory.current = true;
+    setSelectedCategory(category);
+  };
+
   return (
     // main container
     <div className="">
       {/* category filter tabs */}
       <CategoryTabs
         selectedCategory={selectedCategory}
-        onCategoryChange={setSelectedCategory}
+        onCategoryChange={handleCategoryChange}
       />
 
       {/* show message when no tasks exist */}
@@ -101,7 +140,7 @@ const TodoList: React.FC<TodoListProps> = ({ searchTerm = "" }) => {
           </h3>
           <p className="text-gray-500 break-words max-w-full overflow-hidden">
             {searchTerm !== "" 
-              ? `No todos match "${searchTerm}"`
+              ? `No todos match "${searchTerm}" in the "${selectedCategory === 'all' ? 'all' : categories.find(cat => cat.value === selectedCategory)?.label}" category`
               : selectedCategory === 'all' 
                 ? "Start by adding your first todo!" 
                 : `No todos in the "${categories.find(cat => cat.value === selectedCategory)?.label}" category`
@@ -132,4 +171,5 @@ const TodoList: React.FC<TodoListProps> = ({ searchTerm = "" }) => {
     </div>
   );
 };
+
 export default TodoList;
